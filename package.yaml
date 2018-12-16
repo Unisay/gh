@@ -1,0 +1,109 @@
+name: gh
+version: "0.1.0.0"
+category: "productivity"
+author: "Yuriy Lazarev"
+maintainer: unisay@users.noreply.github.com
+copyright: "Yuriy Lazarev"
+github: "unisay/gh"
+extra-source-files:
+- README.md
+
+ghc-options:
+- -Wall
+- -Wcompat
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wredundant-constraints
+- -Wimplicit-prelude
+- -Wtabs
+- -Wmissing-local-signatures
+- -fhelpful-errors
+
+default-extensions:
+- ApplicativeDo
+- BangPatterns
+- ConstraintKinds
+- DataKinds
+- DefaultSignatures
+- DeriveFoldable
+- DeriveFunctor
+- DeriveGeneric
+- DeriveLift
+- DeriveTraversable
+- DerivingStrategies
+- EmptyCase
+- ExistentialQuantification
+- FlexibleContexts
+- FlexibleInstances
+- FunctionalDependencies
+- GADTs
+- GeneralizedNewtypeDeriving
+- InstanceSigs
+- KindSignatures
+- LambdaCase
+- MultiParamTypeClasses
+- MultiWayIf
+- NamedFieldPuns
+- NoImplicitPrelude
+- OverloadedLabels
+- OverloadedStrings
+- PatternSynonyms
+- RankNTypes
+- RecordWildCards
+- ScopedTypeVariables
+- StandaloneDeriving
+- TupleSections
+- TypeApplications
+- TypeFamilies
+- TypeFamilyDependencies
+- TypeOperators
+
+dependencies:
+- base
+- protolude
+
+_common-deps: &common-deps
+  - exceptions
+  - github
+  - git-config
+  - megaparsec
+  - mtl
+  - protolude
+  - text
+  - transformers
+  - unordered-containers
+
+library:
+  source-dirs: src
+  exposed-modules:
+  - Main
+  dependencies: *common-deps
+
+internal-libraries:
+  gh-internal:
+    source-dirs: src
+    exposed-modules:
+    - Preamble
+    dependencies: *common-deps
+
+executables:
+  gh:
+    main: App
+    source-dirs: app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - gh
+
+tests:
+  spec:
+    main: Main
+    source-dirs:
+    - test
+    dependencies:
+    - gh-internal
+    - hedgehog
+    ghc-options:
+    - -threaded
